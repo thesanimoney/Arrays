@@ -1,70 +1,60 @@
-﻿using System;
-using System.Linq;
+class Program {
+    // The main entry point of the program
+    static main(): void {
+        // Prompt user for the first array of words
+        console.log("Enter the first array of words:");
+        let arr1: string[] = prompt("").split(" "); // Use prompt for user input in a browser environment
 
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine("Enter the first array of words:");
-        string[] arr1 = Console.ReadLine().Split();
+        // Prompt user for the second array of words
+        console.log("Enter the second array of words:");
+        let arr2: string[] = prompt("").split(" ");
 
-        Console.WriteLine("Enter the second array of words:");
-        string[] arr2 = Console.ReadLine().Split();
+        // Call the function to find the largest common end
+        let result: [number, string[], string] = this.findLargestCommonEnd(arr1, arr2);
 
-        var result = FindLargestCommonEnd(arr1, arr2);
-
-        if (result.Item1 > 0)
-        {
-            Console.WriteLine($"The largest common end is at the {result.Item3}: {string.Join(" ", result.Item2)}");
-        }
-        else
-        {
-            Console.WriteLine("No common words at the left and right");
+        // Display the result
+        if (result[0] > 0) {
+            console.log(`The largest common end is at the ${result[2]}: ${result[1].join(" ")}`);
+        } else {
+            console.log("No common words at the left and right");
         }
     }
 
-    static Tuple<int, string[], string> FindLargestCommonEnd(string[] arr1, string[] arr2)
-    {
-        int leftCommonEnd = 0;
-        int rightCommonEnd = 0;
+    // Function to find the largest common end between two arrays of words
+    static findLargestCommonEnd(arr1: string[], arr2: string[]): [number, string[], string] {
+        let leftCommonEnd: number = 0;
+        let rightCommonEnd: number = 0;
 
-        int minLength = Math.Min(arr1.Length, arr2.Length);
+        let minLength: number = Math.min(arr1.length, arr2.length);
 
         // Scan from left to right
-        for (int i = 0; i < minLength; i++)
-        {
-            if (arr1[i] == arr2[i])
-            {
+        for (let i = 0; i < minLength; i++) {
+            if (arr1[i] === arr2[i]) {
                 leftCommonEnd++;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
 
         // Scan from right to left
-        for (int i = 1; i <= minLength; i++)
-        {
-            if (arr1[arr1.Length - i] == arr2[arr2.Length - i])
-            {
+        for (let i = 1; i <= minLength; i++) {
+            if (arr1[arr1.length - i] === arr2[arr2.length - i]) {
                 rightCommonEnd++;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
 
-        if (leftCommonEnd >= rightCommonEnd)
-        {
-            string[] commonEnd = arr1.Take(leftCommonEnd).ToArray();
-            return new Tuple<int, string[], string>(leftCommonEnd, commonEnd, "left");
-        }
-        else
-        {
-            string[] commonEnd = arr1.Skip(arr1.Length - rightCommonEnd).ToArray();
-            return new Tuple<int, string[], string>(rightCommonEnd, commonEnd, "right");
+        // Determine the larger common end and its position
+        if (leftCommonEnd >= rightCommonEnd) {
+            let commonEnd: string[] = arr1.slice(0, leftCommonEnd);
+            return [leftCommonEnd, commonEnd, "left"];
+        } else {
+            let commonEnd: string[] = arr1.slice(arr1.length - rightCommonEnd);
+            return [rightCommonEnd, commonEnd, "right"];
         }
     }
 }
+
+// Call the main method to start the program
+Program.main();
